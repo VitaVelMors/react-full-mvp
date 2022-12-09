@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import pg from 'pg';
-import config from './config.js'; [process.env.NODE_ENV ||"dev"]
+import Config from './config.js'; [process.env.NODE_ENV ||"dev"]
 
 
 // const config = require('..config.json')[process.env.NODE_ENV ||"dev"]
 
 const { Pool } = pg;
-const pool = new Pool({connectionString:config.connectionString})
+const pool = new Pool({connectionString:Config.connectionString})
 const app  = express();
 const port = 5000
 
