@@ -1,32 +1,42 @@
-import React, { useState } from 'react';
-
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 import AddScout from './components/AddScout';
-import GetScout from './GetScout';
+import GetScout from './components/GetScouts';
+
 
 function App() {
-  const [scoutName, setscoutName] = useState('')
-  const [scoutAge, setScoutAge] = useState(0)
-  const [scoutGender, setScoutGender] = useState('')
-  const [allScouts, setAllScouts] = useState([])
+  let ApiUrl = 'http://localhost:5000/scouts';
+  const [scoutName, setScoutName] = useState('')
+  const [scoutAge, setScoutAge] = useState('')
+  const [scoutGender, setScoutGender] = useState('');
+  const [allScouts, setAllScouts] = useState([]);
+  const [scout, setScout] = useState([]);
+  const [refreshData, setRefreshData] = useState(false);
 
-  const scoutProps = {
-    scoutName,
-    setscoutName,
-    scoutAge,
-    setScoutAge,
-    scoutGender, 
-    setScoutGender,
-    allScouts
+  const contextData = {
+    ApiUrl,
+    scoutName, setScoutName,
+    scoutAge, setScoutAge,
+    scoutGender, setScoutGender,
+    refreshData, setRefreshData,
+    allScouts, setAllScouts,
+    scout, setScout,
   }
 
-  return (
-    <div className='app'>
-      <AddScout {...scoutProps} />
-      <GetScout {...scoutProps} />
-    </div>
 
-  )
+
+
+
+  return (
+    <listContextStates.Provider value={{ ...contextData }}>
+      <div className="App">
+        <AddScout />
+        <br/>
+        <GetScout />
+      </div>
+    </listContextStates.Provider>
+  );
 }
 
+export const listContextStates = React.createContext();
 export default App

@@ -1,39 +1,70 @@
-import React from "react";
+import React, { useContext, useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { listContextStates } from '../App';
+import axios from 'axios';
 
 
-const AddScout = (props) => {
-  console.log(props.allScouts)
-  {/* was a question clicked?  */}
-  {/* Yes? Show clue */}
-  {/* No? Show Categories */}
-  console.log(props.currentQuestion.answer)
-  return (props.currentQuestion.question) ? 
-    <div id="question">{props.currentQuestion.question}</div> : 
-    <div id="gameboard"><Categories {...props} /></div>
-};
+const AddScout = () => {
+  // console.log(props)
+  const {ApiUrl, scoutName, setScoutName, scoutAge, setScoutAge, 
+    scoutGender, setScoutGender, refreshData, setRefreshData} = useContext(listContextStates);
+
+  const addScoutToApi = async (e) => {
+    await axios.post(`${ApiUrl}`, {
+      name: `${scoutName}`, 
+      age: `${scoutAge}`, 
+      gender: `${scoutGender}` })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    setRefreshData(true)
+  };
+
+      return(
+        <div className="add-scout">
+          <h4 className="text-center my-3">Add A Scout Here!</h4>
+          <Form>
+            <Form.Group className="mb-3" controlId="formScoutName">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control 
+              type="text" 
+              placeholder="Enter Scout's Name" 
+              onChange={(e) => setScoutName(e.target.value)} 
+              value={scoutName}/>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formScoutAge">
+              <Form.Label>Age</Form.Label>
+              <Form.Control 
+              type="number" 
+              placeholder="Enter Scout's Age" 
+              onChange={e => setScoutAge(e.target.value)} 
+              value={scoutAge}/>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formScoutGender">
+              <Form.Label>Gender</Form.Label>
+              <Form.Control 
+              type="text" 
+              placeholder="Enter Scout's Gender" 
+              onChange={e => setScoutGender(e.target.value)} 
+              value={scoutGender}/>
+            </Form.Group>
+ 
+            <Button variant="primary" type="submit" onClick={addScoutToApi}>
+              Submit
+            </Button>
+          </Form>
+        </div>
+      )
+  };
 
 export default AddScout;
 
 
-{/* <div className="App">
-<div>
-  <a href="https://vitejs.dev" target="_blank">
-    <img src="/vite.svg" className="logo" alt="Vite logo" />
-  </a>
-  <a href="https://reactjs.org" target="_blank">
-    <img src={reactLogo} className="logo react" alt="React logo" />
-  </a>
-</div>
-<h1>Vite + React</h1>
-<div className="card">
-  <button onClick={() => setCount((count) => count + 1)}>
-    count is {count}
-  </button>
-  <p>
-    Edit <code>src/App.jsx</code> and save to test HMR
-  </p>
-</div>
-<p className="read-the-docs">
-  Click on the Vite and React logos to learn more
-</p>
-</div> */}
+function BasicExample() {
+
+}
